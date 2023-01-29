@@ -153,9 +153,23 @@ print("Test accuracy:", test_acc)
 # Make predictions on the test data
 test_predictions = model.predict(x_test)
 print(test_predictions)
-# Convert the prections to the original class labels
-#test_predictions = np.argmax(test_predictions, axis=1)
 
-# Print the confusion matrix
-#from sklearn.metrics import confusion_matrix
-#print(confusion_matrix(y_test, test_predictions))
+team1 = "GSW" #home
+team2 = "CHI" #away
+
+team_1_rows = full.loc[(full["team_x"] == team1)]
+team_2_rows = full.loc[(full["team_y"] == team2)]
+
+matchup = pd.DataFrame(columns=predictors)
+
+matchup.loc[0] = team_1_rows[predictors].iloc[-1]
+matchup.loc[1] = team_2_rows[predictors].iloc[-1]
+
+matchup_predictions = matchup[predictors]
+print(matchup_predictions)
+
+matchup_predictions = model.predict(matchup_predictions)
+
+# Print the predictions
+print(f'Prediction for {team1}: {matchup_predictions[0]}')
+print(f'Prediction for {team2}: {matchup_predictions[1]}')
